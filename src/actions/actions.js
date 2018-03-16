@@ -4,3 +4,8 @@ export const setMessage = (mensaje) => {
         payload: mensaje
     };
 }
+export const changeEstado = () => {
+    return {
+        type: 'changeEstado',
+    };
+}

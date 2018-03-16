@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {Divider} from 'semantic-ui-react'
+import {Divider,Menu,Dropdown,Grid} from 'semantic-ui-react'
 import { connect } from 'react-redux';
-import {setMessage} from './actions/actions';
-import Hijo from './components/Hijo'
+import {setMessage,changeEstado} from './actions/actions';
+import Inputs from './components/Inputs'
 
 class App extends Component {
 
@@ -12,20 +10,28 @@ class App extends Component {
     super(props)
   }
 
+  handleItemClick = (e, { name }) => {
+    
+    if(name === 'Ocultar boton' && this.props.Estado===true)
+      this.props.changeEstado();
+    if(name === 'Mostrar boton' && this.props.Estado===false)
+      this.props.changeEstado();  
+
+      console.log("toque: ", name , this.props.Estado)
+  }
+
+
   render() {
     return (
+      
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
       <Divider/>
-      <Divider/>
-      <Hijo/>
-      <label> mensaje: {this.props.Mensaje}</label>
+      <Menu secondary vertical>
+        <Menu.Item name="Mostrar boton" active={this.props.Estado === true} onClick={this.handleItemClick} />
+        <Menu.Item name="Ocultar boton" active={this.props.Estado === false} onClick={this.handleItemClick} />
+      </Menu>
+            <label> Mensaje: {this.props.Mensaje}</label>
+            <Inputs/> 
       </div>
     );
   }
@@ -33,12 +39,13 @@ class App extends Component {
 
 function mapStateToProps(state){
   return{
-    Mensaje : state.mensaje /* probar */
+    Mensaje : state.mensaje , // el mensaje del store es con M miniscula, con M mayuscula es el local
+    Estado : state.estado
   }
   
 }
 
 const ActiontoProps = {
-  setMessage
+  setMessage,changeEstado
 }
 export default connect(mapStateToProps,ActiontoProps)(App);
